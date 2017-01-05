@@ -3,26 +3,25 @@
  */
 
 var promise = require('bluebird');
+var json2csv = require('json2csv');
 var config = require('./config');
 
 var options = {
-    // Initialization Options
     promiseLib: promise
 };
 
 var pgp = require('pg-promise')(options);
-var connectionString = config['postgresConnection'];
+var connectionString = config.databaseConnection;
 var db = pgp(connectionString);
 
-// add query functions
-function getAllPuppies(req, res, next) {
-    db.any('select * from pups')
+function getAllMeditationEntries(req, res, next) {
+    db.any('select * from meditation')
         .then(function (data) {
             res.status(200)
                 .json({
                     status: 'success',
                     data: data,
-                    message: 'Retrieved ALL puppies'
+                    message: 'Retrieved ALL meditation entries'
                 });
         })
         .catch(function (err) {
@@ -30,15 +29,15 @@ function getAllPuppies(req, res, next) {
         });
 }
 
-function getSinglePuppy(req, res, next) {
-    var pupID = parseInt(req.params.id);
-    db.one('select * from pups where id = $1', pupID)
+function getSingleMeditationEntry(req, res, next) {
+    var rowId = parseInt(req.params.id);
+    db.one('select * from meditation where id = $1', rowId)
         .then(function (data) {
             res.status(200)
                 .json({
                     status: 'success',
                     data: data,
-                    message: 'Retrieved ONE puppy'
+                    message: 'Retrieved ONE meditation entry'
                 });
         })
         .catch(function (err) {
@@ -46,16 +45,15 @@ function getSinglePuppy(req, res, next) {
         });
 }
 
-function createPuppy(req, res, next) {
-    req.body.age = parseInt(req.body.age);
-    db.none('insert into pups(name, breed, age, sex)' +
-        'values(${name}, ${breed}, ${age}, ${sex})',
+function createMeditationEntry(req, res, next) {
+    db.none('insert into meditation(nickname, answer, date)' +
+        'values(${nickname}, ${answer}, ${date})',
         req.body)
         .then(function () {
             res.status(200)
                 .json({
                     status: 'success',
-                    message: 'Inserted one puppy'
+                    message: 'Inserted one meditation entry'
                 });
         })
         .catch(function (err) {
@@ -63,12 +61,36 @@ function createPuppy(req, res, next) {
         });
 }
 
+function exportAllMeditationEntries(req, res, next) {
+    db.any('select * from meditation')
+        .then(function (data) {
+            var fields = ['id', 'nickname', 'answer', 'date'];
+            console.log(fields)
+            console.log(data)
+            var csv = json2csv({ data: data, fields: fields });
+            console.log(csv)
+            res.status(200)
+                .set('Content-Type', 'application/octet-stream')
+                .send(csv);
+            // res.status(200)
+            //     .json({
+            //         status: 'success',
+            //         data: data,
+            //         message: 'Retrieved ALL meditation entries'
+            //     });
+        })
+        .catch(function (err) {
+            return next(err);
+        });
+
+}
+
+
 
 
 module.exports = {
-    getAllPuppies: getAllPuppies,
-    getSinglePuppy: getSinglePuppy,
-    createPuppy: createPuppy,
-    // updatePuppy: updatePuppy,
-    // removePuppy: removePuppy
+    getAllMeditationEntries: getAllMeditationEntries,
+    getSingleMeditationEntry: getSingleMeditationEntry,
+    createMeditationEntry: createMeditationEntry,
+    exportAllMeditationEntries: exportAllMeditationEntries,
 };

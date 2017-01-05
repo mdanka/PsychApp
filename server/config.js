@@ -3,7 +3,7 @@
  */
 
 var config = {
-    postgresConnection: 'postgres://localhost:5432/puppies'
+    databaseConnection: 'postgres://localhost:5432/psychapp'
 }
 
 module.exports = config;
