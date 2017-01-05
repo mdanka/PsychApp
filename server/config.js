@@ -4,6 +4,7 @@
 
 var config = {
     databaseConnection: 'postgres://localhost:5432/psychapp'
+    //databaseConnection: 'postgres://username:password@localhost:5432/psychapp'
 }
 
 module.exports = config;
