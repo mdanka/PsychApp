@@ -6,17 +6,25 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  Navigator,
-  WebView,
+    AsyncStorage,
+    AppRegistry,
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    TextInput,
+    Navigator,
+    WebView,
 } from 'react-native';
 import MyScene from './MyScene';
 var PushNotification = require('react-native-push-notification');
+var moment = require('moment');
+
+
+var CONFIG = {
+    apiBaseUrl: 'https://miklosdanka.com/psychapp/api',
+}
+
 
 
 
@@ -79,7 +87,7 @@ PushNotification.localNotification({
 
     /* iOS and Android properties */
     title: "Hi Maťko!", // (optional, for iOS this is only used in apple watch, the title will be the app name on other iOS devices)
-        message: "This is a mobile notification. Do you like it?", // (required)
+    message: "This is a mobile notification. Do you like it?", // (required)
     playSound: false, // (optional) default: true
     soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
     number: '10', // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
@@ -91,62 +99,62 @@ PushNotification.localNotification({
 
 
 class HelloWorldApp extends Component {
-  render() {
-    return (
-        <Text>Hello world!</Text>
-  );
-  }
+    render() {
+        return (
+            <Text>Hello world!</Text>
+        );
+    }
 }
 
 class Bananas extends Component {
-  render() {
-    let pic = {
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-    };
-    return (
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <Image source={pic} style={{width: 193, height: 110}}/>
-          <View style={{flex: 1, backgroundColor: 'powderblue'}} />
-          <View style={{flex: 2, backgroundColor: 'skyblue'}} />
-          <View style={{flex: 3, backgroundColor: 'steelblue'}} />
-        </View>
-  );
-  }
+    render() {
+        let pic = {
+            uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
+        };
+        return (
+            <View style={{flex: 1, flexDirection: 'row'}}>
+                <Image source={pic} style={{width: 193, height: 110}}/>
+                <View style={{flex: 1, backgroundColor: 'powderblue'}} />
+                <View style={{flex: 2, backgroundColor: 'skyblue'}} />
+                <View style={{flex: 3, backgroundColor: 'steelblue'}} />
+            </View>
+        );
+    }
 }
 
 class PizzaTranslator extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {text: ''};
-  }
+    constructor(props) {
+        super(props);
+        this.state = {text: ''};
+    }
 
-  render() {
-    return (
-      <View style={{padding: 10}}>
-        <TextInput
-          style={{height: 40}}
-          placeholder="Type here to translate!"
-          onChangeText={(text) => this.setState({text})}
-        />
-        <Text style={{padding: 10, fontSize: 42}}>
-          {this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
-        </Text>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={{padding: 10}}>
+                <TextInput
+                    style={{height: 40}}
+                    placeholder="Type here to translate!"
+                    onChangeText={(text) => this.setState({text})}
+                />
+                <Text style={{padding: 10, fontSize: 42}}>
+                    {this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
+                </Text>
+            </View>
+        );
+    }
 }
 
 class YoDawgApp extends Component {
-  render() {
-    return (
-      <Navigator
-        initialRoute={{ title: 'My Initial Scene', index: 0 }}
-        renderScene={(route, navigator) => {
-          return <MyScene title={route.title} />
-        }}
-      />
-    );
-  }
+    render() {
+        return (
+            <Navigator
+                initialRoute={{ title: 'My Initial Scene', index: 0 }}
+                renderScene={(route, navigator) => {
+                    return <MyScene title={route.title} />
+                }}
+            />
+        );
+    }
 }
 
 class SimpleNavigationApp extends Component {
@@ -184,51 +192,134 @@ class MyWeb extends Component {
     render() {
         return (
             <WebView
-        source={{uri: 'https://github.com/facebook/react-native'}}
-        style={{marginTop: 20}}
-    />
-    );
+                source={{uri: 'https://github.com/facebook/react-native'}}
+                style={{marginTop: 20}}
+            />
+        );
     }
 }
 
 // AppRegistry.registerComponent('PsychApp', () => MyWeb);
 
 export default class PsychApp extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native! Hi!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
-  }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            meditations: [],
+            text: 'not updated',
+            meditationLastAnswerDate: null
+        };
+
+        this.STORAGE = {}
+        this.STORAGE.PREFIX = '@PsychAppStorage:'
+        this.STORAGE.KEY_MEDITATION_LAST_ANSWER_DATE = this.STORAGE.PREFIX + 'MEDITATION_LAST_ANSWER_DATE'
+
+        setTimeout(() => {
+            this._fetchAllMeditations();
+            // this._saveMeditationAnswer();
+        }, 1000);
+    }
+
+    componentDidMount() {
+        this._loadInitialState().done();
+    }
+
+    _loadInitialState = async () => {
+        try {
+            var meditationLastAnswerDate = await AsyncStorage.getItem(this.STORAGE.KEY_MEDITATION_LAST_ANSWER_DATE);
+            if (meditationLastAnswerDate !== null){
+                this.setState({
+                    meditationLastAnswerDate: meditationLastAnswerDate
+                });
+            } else {
+                this.setState({
+                    meditationLastAnswerDate: '2000-01-01'
+                });
+            }
+        } catch (error) {
+            console.error('AsyncStorage error: ' + error.message);
+        }
+    };
+
+    _fetchAllMeditations() {
+        return fetch(CONFIG.apiBaseUrl + '/meditations')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    meditations: responseJson.data[0].nickname,
+//                meditations: ["asd"],
+                    text: 'updated'
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    _saveMeditationAnswer() {
+        var currentTimeString = moment().format()
+        return fetch(CONFIG.apiBaseUrl + '/meditations', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                nickname: 'testuser',
+                answer: 'yes',
+                date: currentTimeString,
+            })
+        })
+            .then((response) => {
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.welcome}>
+                    Welcome to React Native! Hi!
+                </Text>
+                <Text style={styles.instructions}>
+                    To get started, edit index.android.js
+                </Text>
+                <Text style={styles.instructions}>
+                    Double tap R on your keyboard to reload,{'\n'}
+                    Shake or press menu button for dev menu
+                </Text>
+                <Text style={styles.instructions}>
+                    {this.state.meditations}{'\n'}
+                    {this.state.text}{'\n'}
+                    {this.state.meditationLastAnswerDate}{'\n'}
+                </Text>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    instructions: {
+        textAlign: 'center',
+        color: '#333333',
+        marginBottom: 5,
+    },
 });
+
+
 
 AppRegistry.registerComponent('PsychApp', () => PsychApp);
