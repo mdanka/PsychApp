@@ -1,11 +1,13 @@
 import {StyleSheet} from "react-native";
 
+const backgroundColor = '#E1F5FE'
+
 export const STYLES = StyleSheet.create({
     appContainer: {
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'stretch',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: backgroundColor,
     },
     welcome: {
         fontSize: 20,
@@ -17,11 +19,15 @@ export const STYLES = StyleSheet.create({
         color: '#333333',
         marginBottom: 5,
     },
+    adviceText: {
+        fontStyle: 'italic',
+        textAlign: 'center',
+    },
     surveyContainer: {
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'stretch',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: backgroundColor,
     },
     surveyOptionsLayout: {
         flex: 1,
@@ -30,7 +36,7 @@ export const STYLES = StyleSheet.create({
         flexDirection: 'row',
     },
     surveyQuestion: {
-        color: 212121,
+        color: '#263238',
         fontSize: 30,
         textAlign: 'center',
         margin: 10,
