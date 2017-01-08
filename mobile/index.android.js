@@ -1,36 +1,15 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
-import React, { Component } from 'react';
-import {
-    AsyncStorage,
-    AppRegistry,
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    TextInput,
-    Navigator,
-    WebView,
-} from 'react-native';
-import MyScene from './MyScene';
+import React, {Component} from "react";
+import {AsyncStorage, AppRegistry, Button, StyleSheet, Text, View, Image, TextInput, Navigator, WebView} from "react-native";
+import {STYLES} from "./components/globals"
+import Survey from "./components/Survey";
 var PushNotification = require('react-native-push-notification');
 var moment = require('moment');
-
 
 var CONFIG = {
     apiBaseUrl: 'https://miklosdanka.com/psychapp/api',
 }
 
-
-
-
-
 PushNotification.configure({
-
     // (optional) Called when Token is generated (iOS and Android)
     onRegister: function(token) {
         console.log( 'TOKEN:', token );
@@ -98,108 +77,6 @@ PushNotification.localNotification({
 
 
 
-class HelloWorldApp extends Component {
-    render() {
-        return (
-            <Text>Hello world!</Text>
-        );
-    }
-}
-
-class Bananas extends Component {
-    render() {
-        let pic = {
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-        };
-        return (
-            <View style={{flex: 1, flexDirection: 'row'}}>
-                <Image source={pic} style={{width: 193, height: 110}}/>
-                <View style={{flex: 1, backgroundColor: 'powderblue'}} />
-                <View style={{flex: 2, backgroundColor: 'skyblue'}} />
-                <View style={{flex: 3, backgroundColor: 'steelblue'}} />
-            </View>
-        );
-    }
-}
-
-class PizzaTranslator extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {text: ''};
-    }
-
-    render() {
-        return (
-            <View style={{padding: 10}}>
-                <TextInput
-                    style={{height: 40}}
-                    placeholder="Type here to translate!"
-                    onChangeText={(text) => this.setState({text})}
-                />
-                <Text style={{padding: 10, fontSize: 42}}>
-                    {this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
-                </Text>
-            </View>
-        );
-    }
-}
-
-class YoDawgApp extends Component {
-    render() {
-        return (
-            <Navigator
-                initialRoute={{ title: 'My Initial Scene', index: 0 }}
-                renderScene={(route, navigator) => {
-                    return <MyScene title={route.title} />
-                }}
-            />
-        );
-    }
-}
-
-class SimpleNavigationApp extends Component {
-    render() {
-        return (
-            <Navigator
-                initialRoute={{ title: 'My Initial Scene', index: 0 }}
-                renderScene={(route, navigator) =>
-                    <MyScene
-                        title={route.title}
-
-                        // Function to call when a new scene should be displayed
-                        onForward={() => {
-                            const nextIndex = route.index + 1;
-                            navigator.push({
-                                title: 'Scene ' + nextIndex,
-                                index: nextIndex,
-                            });
-                        }}
-
-                        // Function to call to go back to the previous scene
-                        onBack={() => {
-                            if (route.index > 0) {
-                                navigator.pop();
-                            }
-                        }}
-                    />
-                }
-            />
-        )
-    }
-}
-
-class MyWeb extends Component {
-    render() {
-        return (
-            <WebView
-                source={{uri: 'https://github.com/facebook/react-native'}}
-                style={{marginTop: 20}}
-            />
-        );
-    }
-}
-
-// AppRegistry.registerComponent('PsychApp', () => MyWeb);
 
 export default class PsychApp extends Component {
 
@@ -278,48 +155,137 @@ export default class PsychApp extends Component {
             });
     }
 
+    _onPressLearnMore() {
+
+    }
+
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    Welcome to React Native! Hi!
-                </Text>
-                <Text style={styles.instructions}>
-                    To get started, edit index.android.js
-                </Text>
-                <Text style={styles.instructions}>
-                    Double tap R on your keyboard to reload,{'\n'}
-                    Shake or press menu button for dev menu
-                </Text>
-                <Text style={styles.instructions}>
+            <View style={STYLES.appContainer}>
+                <Text style={STYLES.instructions}>
                     {this.state.meditations}{'\n'}
                     {this.state.text}{'\n'}
                     {this.state.meditationLastAnswerDate}{'\n'}
                 </Text>
+                <Survey
+                    questionText="Have you meditated today?"
+                    option1Text="Yes"
+                    option2Text="No"
+                    thankYouText="Thanks for your response!"
+                    onOption1Clicked={() => {}}
+                    onOption2Clicked={() => {}}
+                    isAnswered={false}
+                />
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-});
+
 
 
 
 AppRegistry.registerComponent('PsychApp', () => PsychApp);
+
+
+
+// class HelloWorldApp extends Component {
+//     render() {
+//         return (
+//             <Text>Hello world!</Text>
+//         );
+//     }
+// }
+//
+// class Bananas extends Component {
+//     render() {
+//         let pic = {
+//             uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
+//         };
+//         return (
+//             <View style={{flex: 1, flexDirection: 'row'}}>
+//                 <Image source={pic} style={{width: 193, height: 110}}/>
+//                 <View style={{flex: 1, backgroundColor: 'powderblue'}} />
+//                 <View style={{flex: 2, backgroundColor: 'skyblue'}} />
+//                 <View style={{flex: 3, backgroundColor: 'steelblue'}} />
+//             </View>
+//         );
+//     }
+// }
+//
+// class PizzaTranslator extends Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = {text: ''};
+//     }
+//
+//     render() {
+//         return (
+//             <View style={{padding: 10}}>
+//                 <TextInput
+//                     style={{height: 40}}
+//                     placeholder="Type here to translate!"
+//                     onChangeText={(text) => this.setState({text})}
+//                 />
+//                 <Text style={{padding: 10, fontSize: 42}}>
+//                     {this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
+//                 </Text>
+//             </View>
+//         );
+//     }
+// }
+//
+// class YoDawgApp extends Component {
+//     render() {
+//         return (
+//             <Navigator
+//                 initialRoute={{ title: 'My Initial Scene', index: 0 }}
+//                 renderScene={(route, navigator) => {
+//                     return <MyScene title={route.title} />
+//                 }}
+//             />
+//         );
+//     }
+// }
+//
+// class SimpleNavigationApp extends Component {
+//     render() {
+//         return (
+//             <Navigator
+//                 initialRoute={{ title: 'My Initial Scene', index: 0 }}
+//                 renderScene={(route, navigator) =>
+//                     <MyScene
+//                         title={route.title}
+//
+//                         // Function to call when a new scene should be displayed
+//                         onForward={() => {
+//                             const nextIndex = route.index + 1;
+//                             navigator.push({
+//                                 title: 'Scene ' + nextIndex,
+//                                 index: nextIndex,
+//                             });
+//                         }}
+//
+//                         // Function to call to go back to the previous scene
+//                         onBack={() => {
+//                             if (route.index > 0) {
+//                                 navigator.pop();
+//                             }
+//                         }}
+//                     />
+//                 }
+//             />
+//         )
+//     }
+// }
+//
+// class MyWeb extends Component {
+//     render() {
+//         return (
+//             <WebView
+//                 source={{uri: 'https://github.com/facebook/react-native'}}
+//                 style={{marginTop: 20}}
+//             />
+//         );
+//     }
+// }
