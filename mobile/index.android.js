@@ -215,9 +215,6 @@ export default class PsychApp extends Component {
                 <Text style={STYLES.adviceText}>
                     Important: please don't change your nickname once set - it is used in our analysis
                 </Text>
-                <Text style={STYLES.instructions}>
-                    {this.state.meditationLastAnswerDate}{'\n'}
-                </Text>
                 <Survey
                     questionText="Have you meditated today?"
                     option1Text="Yes"
