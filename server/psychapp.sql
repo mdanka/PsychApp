@@ -21,4 +21,3 @@ GRANT ALL PRIVILEGES ON DATABASE psychapp TO psychapp;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO psychapp;
 
 GRANT USAGE, SELECT ON SEQUENCE meditation_id_seq TO psychapp;
-
