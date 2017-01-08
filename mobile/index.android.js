@@ -96,7 +96,7 @@ export default class PsychApp extends Component {
         this.STORAGE.KEY_NICKNAME = this.STORAGE.PREFIX + 'NICKNAME'
 
         setTimeout(() => {
-            this._fetchAllMeditations();
+            this._fetchFromServerAllMeditations();
             // this._saveMeditationAnswer();
         }, 1000);
     }
@@ -120,7 +120,7 @@ export default class PsychApp extends Component {
                 });
             } else {
                 this.setState({
-                    meditationLastAnswerDate: '2000-01-01'
+                    meditationLastAnswerDate: '2000-01-01T00:00:00.000Z'
                 });
             }
 
@@ -139,7 +139,7 @@ export default class PsychApp extends Component {
         }
     };
 
-    _fetchAllMeditations = async () => {
+    _fetchFromServerAllMeditations = async () => {
         try {
             const response = await fetch(CONFIG.apiBaseUrl + '/meditations')
             const responseJson = await response.json()
@@ -165,33 +165,42 @@ export default class PsychApp extends Component {
             });
     }
 
-    _saveMeditationAnswer = async () => {
-        var currentTimeString = moment().format()
-        try {
-            const response = await fetch(CONFIG.apiBaseUrl + '/meditations', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    nickname: 'testuser',
-                    answer: 'yes',
-                    date: currentTimeString,
-                })
+    _saveToServerMeditationAnswer = async (answer, timeString, nickname) => {
+        const response = await fetch(CONFIG.apiBaseUrl + '/meditations', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                nickname: nickname,
+                answer: answer,
+                date: timeString,
             })
+        })
+    }
+
+    _onAnswerSubmitted = async (answer) => {
+        try {
+            // Preconditions
+            if (_.isEmpty(this.state.nickname)) {
+                ToastAndroid.show('Please enter a nickname first', ToastAndroid.LONG);
+                return
+            }
+            // Collect data
+            const currentTime = moment()
+            const currentTimeFullString = currentTime.format()
+            const nickname = this.state.nickname
+            // Save to server
+            await this._saveToServerMeditationAnswer(answer, currentTimeFullString, nickname)
+            // Persist to storage
+            await AsyncStorage.setItem(this.STORAGE.KEY_MEDITATION_LAST_ANSWER_DATE, currentTimeFullString);
+            // Inform user
+            ToastAndroid.show('Answer submitted', ToastAndroid.SHORT);
         } catch (error) {
             console.error(error)
             ToastAndroid.show('Failed to save answer - are you connected to the internet?', ToastAndroid.LONG);
         }
-    }
-
-    _onAnswerSubmitted(answer) {
-        if (_.isEmpty(this.state.nickname)) {
-            ToastAndroid.show('Please enter a nickname first', ToastAndroid.LONG);
-            return
-        }
-        ToastAndroid.show('Answer submitted: ' + answer, ToastAndroid.SHORT);
     }
 
     _onNicknameChanged = async (nickname) => {
