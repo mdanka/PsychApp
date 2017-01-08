@@ -84,8 +84,6 @@ export default class PsychApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            meditations: [],
-            text: 'not updated',
             meditationLastAnswerDate: null,
             nickname: '',
         };
@@ -143,26 +141,11 @@ export default class PsychApp extends Component {
         try {
             const response = await fetch(CONFIG.apiBaseUrl + '/meditations')
             const responseJson = await response.json()
-            this.setState({
-                meditations: responseJson.data[0].nickname,
-                text: 'updated'
-            })
+            this.setState({})
         } catch (error) {
             console.error(error)
             ToastAndroid.show('Failed to retrieve meditation data - are you connected to the internet?', ToastAndroid.LONG);
         }
-        return fetch(CONFIG.apiBaseUrl + '/meditations')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({
-                    meditations: responseJson.data[0].nickname,
-//                meditations: ["asd"],
-                    text: 'updated'
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-            });
     }
 
     _saveToServerMeditationAnswer = async (answer, timeString, nickname) => {
@@ -195,6 +178,9 @@ export default class PsychApp extends Component {
             await this._saveToServerMeditationAnswer(answer, currentTimeFullString, nickname)
             // Persist to storage
             await AsyncStorage.setItem(this.STORAGE.KEY_MEDITATION_LAST_ANSWER_DATE, currentTimeFullString);
+            this.setState({
+                meditationLastAnswerDate: currentTimeFullString
+            })
             // Inform user
             ToastAndroid.show('Answer submitted', ToastAndroid.SHORT);
         } catch (error) {
@@ -214,6 +200,10 @@ export default class PsychApp extends Component {
     }
 
     render() {
+        const todayDay = moment().format('YYYY-MM-DD')
+        const lastAnswerDay = moment(this.state.meditationLastAnswerDate).format('YYYY-MM-DD')
+        const isAnsweredToday = todayDay === lastAnswerDay
+
         return (
             <View style={STYLES.appContainer}>
                 <TextInput
@@ -226,8 +216,6 @@ export default class PsychApp extends Component {
                     Important: please don't change your nickname once set - it is used in our analysis
                 </Text>
                 <Text style={STYLES.instructions}>
-                    {this.state.meditations}{'\n'}
-                    {this.state.text}{'\n'}
                     {this.state.meditationLastAnswerDate}{'\n'}
                 </Text>
                 <Survey
@@ -237,7 +225,7 @@ export default class PsychApp extends Component {
                     thankYouText="Thanks for your response!"
                     onOption1Clicked={() => this._onAnswerSubmitted('yes')}
                     onOption2Clicked={() => this._onAnswerSubmitted('no')}
-                    isAnswered={false}
+                    isAnswered={isAnsweredToday}
                 />
             </View>
         );
