@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {AsyncStorage, AppRegistry, Button, StyleSheet, Text, View, Image, TextInput, Navigator, WebView, ToastAndroid} from "react-native";
-import {STYLES} from "./components/globals"
+import {STYLES, SELECTED_STRINGS} from "./components/globals"
 import Survey from "./components/Survey";
 var PushNotification = require('react-native-push-notification');
 var moment = require('moment');
@@ -92,11 +92,6 @@ export default class PsychApp extends Component {
         this.STORAGE.PREFIX = '@PsychAppStorage:'
         this.STORAGE.KEY_MEDITATION_LAST_ANSWER_DATE = this.STORAGE.PREFIX + 'MEDITATION_LAST_ANSWER_DATE'
         this.STORAGE.KEY_NICKNAME = this.STORAGE.PREFIX + 'NICKNAME'
-
-        setTimeout(() => {
-            this._fetchFromServerAllMeditations();
-            // this._saveMeditationAnswer();
-        }, 1000);
     }
 
     componentDidMount() {
@@ -132,21 +127,10 @@ export default class PsychApp extends Component {
                 });
             }
         } catch (error) {
-            ToastAndroid.show('Failed to load settings - please restart app', ToastAndroid.SHORT);
+            ToastAndroid.show(SELECTED_STRINGS.errorFailedToLoadSettings, ToastAndroid.SHORT);
             console.error('AsyncStorage error: ' + error.message);
         }
     };
-
-    _fetchFromServerAllMeditations = async () => {
-        try {
-            const response = await fetch(CONFIG.apiBaseUrl + '/meditations')
-            const responseJson = await response.json()
-            this.setState({})
-        } catch (error) {
-            console.error(error)
-            ToastAndroid.show('Failed to retrieve meditation data - are you connected to the internet?', ToastAndroid.LONG);
-        }
-    }
 
     _saveToServerMeditationAnswer = async (answer, timeString, nickname) => {
         const response = await fetch(CONFIG.apiBaseUrl + '/meditations', {
@@ -167,7 +151,7 @@ export default class PsychApp extends Component {
         try {
             // Preconditions
             if (_.isEmpty(this.state.nickname)) {
-                ToastAndroid.show('Please enter a nickname first', ToastAndroid.LONG);
+                ToastAndroid.show(SELECTED_STRINGS.errorPleaseEnterNicknameFirst, ToastAndroid.LONG);
                 return
             }
             // Collect data
@@ -182,10 +166,10 @@ export default class PsychApp extends Component {
                 meditationLastAnswerDate: currentTimeFullString
             })
             // Inform user
-            ToastAndroid.show('Answer submitted', ToastAndroid.SHORT);
+            ToastAndroid.show(SELECTED_STRINGS.messageAnswerSubmitted, ToastAndroid.SHORT);
         } catch (error) {
             console.error(error)
-            ToastAndroid.show('Failed to save answer - are you connected to the internet?', ToastAndroid.LONG);
+            ToastAndroid.show(SELECTED_STRINGS.errorFailedToSaveAnswer, ToastAndroid.LONG);
         }
     }
 
@@ -195,7 +179,7 @@ export default class PsychApp extends Component {
             await AsyncStorage.setItem(this.STORAGE.KEY_NICKNAME, nickname);
         } catch (error) {
             console.error(error)
-            ToastAndroid.show('Failed to save nickname', ToastAndroid.LONG);
+            ToastAndroid.show(SELECTED_STRINGS.errorFailedToSaveNickname, ToastAndroid.LONG);
         }
     }
 
@@ -210,16 +194,16 @@ export default class PsychApp extends Component {
                     style={{height: 50}}
                     onChangeText={(text) => this._onNicknameChanged(text)}
                     value={this.state.nickname}
-                    placeholder='Please enter a nickname here'
+                    placeholder={SELECTED_STRINGS.pleaseEnterANickname}
                 />
                 <Text style={STYLES.adviceText}>
-                    Important: please don't change your nickname once set - it is used in our analysis
+                    {SELECTED_STRINGS.dontChangeYourNickname}
                 </Text>
                 <Survey
-                    questionText="Have you meditated today?"
-                    option1Text="Yes"
-                    option2Text="No"
-                    thankYouText="Thanks for your response!"
+                    questionText={SELECTED_STRINGS.haveYouMeditatedToday}
+                    option1Text={SELECTED_STRINGS.yes}
+                    option2Text={SELECTED_STRINGS.no}
+                    thankYouText={SELECTED_STRINGS.thanksForYourResponse}
                     onOption1Clicked={() => this._onAnswerSubmitted('yes')}
                     onOption2Clicked={() => this._onAnswerSubmitted('no')}
                     isAnswered={isAnsweredToday}

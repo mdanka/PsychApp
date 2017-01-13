@@ -42,3 +42,42 @@ export const STYLES = StyleSheet.create({
         margin: 10,
     }
 });
+
+const ALL_STRINGS = {
+    english: {
+        appName: 'PsychoSoap',
+        haveYouMeditatedToday: 'Have you meditated today?',
+        yes: 'Yes',
+        no: 'No',
+        thanksForYourResponse: 'Thanks for your response!',
+        youHaveSubmittedAnAnswer: 'You have submitted an answer today.',
+        pleaseEnterANickname: 'Please enter a nickname here',
+        dontChangeYourNickname: 'Important: please don’t change your nickname once set, because it is used in our analysis',
+
+        errorFailedToLoadSettings: 'Failed to load settings - please restart app',
+        errorPleaseEnterNicknameFirst: 'Please enter a nickname first',
+        messageAnswerSubmitted: 'Answer submitted',
+        errorFailedToSaveAnswer: 'Failed to save answer - are you connected to the internet?'
+        errorFailedToSaveNickname: 'Failed to save nickname',
+    },
+    czech: {
+        appName: 'Psychomejdlo',
+        haveYouMeditatedToday: 'Už jsi dnes meditoval/a?',
+        yes: 'Ano',
+        no: 'Ne',
+        thanksForYourResponse: 'Díky za Tvou odpověď!',
+        youHaveSubmittedAnAnswer: 'Dnes jsi odpověděl na otázku.',
+        pleaseEnterANickname: 'Napište prosím svou přezdívku zde',
+        dontChangeYourNickname: 'Důležité: prosíme, neměňte svou přezdívku, usnadní nám analýzu',
+
+        errorFailedToLoadSettings: 'Failed to load settings - please restart app',
+        errorPleaseEnterNicknameFirst: 'Please enter a nickname first',
+        messageAnswerSubmitted: 'Answer submitted',
+        errorFailedToSaveAnswer: 'Failed to save answer - are you connected to the internet?'
+        errorFailedToSaveNickname: 'Failed to save nickname',
+    }
+}
+
+const SELECTED_LANGUAGE = 'czech'
+
+export const SELECTED_STRINGS = ALL_STRINGS[SELECTED_LANGUAGE]
