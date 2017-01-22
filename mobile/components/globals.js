@@ -54,10 +54,15 @@ const ALL_STRINGS = {
         pleaseEnterANickname: 'Please enter a nickname here',
         dontChangeYourNickname: 'Important: please don’t change your nickname once set, because it is used in our analysis',
 
+        termsAndConditionsText: 'By using this app, you consent to the processing of personal data for the purpose of research at the Department of Psychology, Faculty of Arts. If you are under 18 years old, you must receive confirmation from a legal guardian.\nI agree to the processing of personal data in the above-defined scope, and I was 18 years old / I received consent of the legal guardian.',
+        termsAndConditionsAccept: 'Yes',
+        termsAndConditionsDecline: 'No',
+        termsAndConditionsDeclineText: 'Unfortunately, you do not fulfill the entry requirements, therefore you cannot use this app unless you agree with terms and conditions or get an informed agreement from your legal guardian.',
+
         errorFailedToLoadSettings: 'Failed to load settings - please restart app',
         errorPleaseEnterNicknameFirst: 'Please enter a nickname first',
         messageAnswerSubmitted: 'Answer submitted',
-        errorFailedToSaveAnswer: 'Failed to save answer - are you connected to the internet?'
+        errorFailedToSaveAnswer: 'Failed to save answer - are you connected to the internet?',
         errorFailedToSaveNickname: 'Failed to save nickname',
     },
     czech: {
@@ -70,10 +75,15 @@ const ALL_STRINGS = {
         pleaseEnterANickname: 'Napište prosím svou přezdívku zde',
         dontChangeYourNickname: 'Důležité: prosíme, neměňte svou přezdívku, usnadní nám analýzu',
 
+        termsAndConditionsText: 'Používáním aplikace Psychomejdlo souhlasíte se zpracováním osobních údajů pro účel výzkumu Katedry psychologie FF UK. Pokud vám ještě nebylo 18 let, musí souhlas potvrdit zákonný zástupce.\nSouhlasím se zpracováním osobních údajů ve výše vymezeném rozsahu a bylo mi 18 let / mám informovaný souhlas zákonného zástupce',
+        termsAndConditionsAccept: 'Ano',
+        termsAndConditionsDecline: 'Ne',
+        termsAndConditionsDeclineText: 'Bohužel nesplňujete podmínky pro užívání aplikace Psychomejdlo, a tedy ji nemůžete používat, pokud nesouhlasíte s podmínkami použití nebo neseženete informovaný souhlas zákonného zástupce.',
+
         errorFailedToLoadSettings: 'Načítání nastavení selhalo, prosím, restartujte aplikaci',
         errorPleaseEnterNicknameFirst: 'Vložte prosím nejdříve svou přezdívku',
         messageAnswerSubmitted: 'Odpověď zaznamenána',
-        errorFailedToSaveAnswer: 'Selhalo zaznamenání odpovědi, jste připojen/a k internetu?'
+        errorFailedToSaveAnswer: 'Selhalo zaznamenání odpovědi, jste připojen/a k internetu?',
         errorFailedToSaveNickname: 'Ukládání přezdívky selhalo',
     }
 }
