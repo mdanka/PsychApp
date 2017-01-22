@@ -86,12 +86,14 @@ export default class PsychApp extends Component {
         this.state = {
             meditationLastAnswerDate: null,
             nickname: '',
+            termsAndConditionsAnswer: null,
         };
 
         this.STORAGE = {}
         this.STORAGE.PREFIX = '@PsychAppStorage:'
         this.STORAGE.KEY_MEDITATION_LAST_ANSWER_DATE = this.STORAGE.PREFIX + 'MEDITATION_LAST_ANSWER_DATE'
         this.STORAGE.KEY_NICKNAME = this.STORAGE.PREFIX + 'NICKNAME'
+        this.STORAGE.KEY_TERMS_AND_CONDITIONS = this.STORAGE.PREFIX + 'TERMS_AND_CONDITIONS'
     }
 
     componentDidMount() {
@@ -102,30 +104,22 @@ export default class PsychApp extends Component {
         try {
             const storageAnswer = await AsyncStorage.multiGet([
                 this.STORAGE.KEY_MEDITATION_LAST_ANSWER_DATE,
-                this.STORAGE.KEY_NICKNAME
+                this.STORAGE.KEY_NICKNAME,
+                this.STORAGE.KEY_TERMS_AND_CONDITIONS
             ]);
             const meditationLastAnswerDate = storageAnswer[0][1]
             const nickname = storageAnswer[1][1]
+            const termsAndConditionsAnswer = storageAnswer[2][1]
 
-            if (meditationLastAnswerDate !== null){
-                this.setState({
-                    meditationLastAnswerDate: meditationLastAnswerDate
-                });
-            } else {
-                this.setState({
-                    meditationLastAnswerDate: '2000-01-01T00:00:00.000Z'
-                });
-            }
+            const meditationLastAnswerDateValue = meditationLastAnswerDate !== null ? meditationLastAnswerDate : '2000-01-01T00:00:00.000Z';
+            const nicknameValue = nickname !== null ? nickname : '';
+            const termsAndConditionsAnswerValue = termsAndConditionsAnswer;
 
-            if (nickname !== null){
-                this.setState({
-                    nickname: nickname
-                });
-            } else {
-                this.setState({
-                    nickname: ''
-                });
-            }
+            this.setState({
+                meditationLastAnswerDate: meditationLastAnswerDateValue,
+                nickname: nicknameValue,
+                termsAndConditionsAnswer: termsAndConditionsAnswerValue,
+            })
         } catch (error) {
             ToastAndroid.show(SELECTED_STRINGS.errorFailedToLoadSettings, ToastAndroid.SHORT);
             console.error('AsyncStorage error: ' + error.message);
