@@ -76,7 +76,7 @@ const ALL_STRINGS = {
         pleaseEnterANickname: 'Napište prosím svou přezdívku zde',
         dontChangeYourNickname: 'Důležité: prosíme, neměňte svou přezdívku, usnadní nám analýzu',
 
-        termsAndConditionsText: 'Používáním aplikace Psychomejdlo souhlasíte se zpracováním osobních údajů pro účel výzkumu Katedry psychologie FF UK. Pokud vám ještě nebylo 18 let, musí souhlas potvrdit zákonný zástupce.\nSouhlasím se zpracováním osobních údajů ve výše vymezeném rozsahu a bylo mi 18 let / mám informovaný souhlas zákonného zástupce',
+        termsAndConditionsText: 'Používáním aplikace Psychomejdlo souhlasíte se zpracováním osobních údajů pro účel výzkumu Katedry psychologie FF UK. Pokud vám ještě nebylo 18 let, musí souhlas potvrdit zákonný zástupce.\nSouhlasím se zpracováním osobních údajů ve výše vymezeném rozsahu a bylo mi 18 let / mám informovaný souhlas zákonného zástupce.',
         termsAndConditionsAccept: 'Ano',
         termsAndConditionsDecline: 'Ne',
         termsAndConditionsDeclineText: 'Bohužel nesplňujete podmínky pro užívání aplikace Psychomejdlo, a tedy ji nemůžete používat, pokud nesouhlasíte s podmínkami použití nebo neseženete informovaný souhlas zákonného zástupce.',

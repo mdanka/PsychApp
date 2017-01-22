@@ -241,9 +241,9 @@ export default class PsychApp extends Component {
     render() {
         const isTermsAndConditionsAccepted = this.state.termsAndConditionsAnswer === 'yes';
         if (isTermsAndConditionsAccepted) {
-            this._renderSurvey();
+            return this._renderSurvey();
         } else {
-            this._renderTermsAndConditions();
+            return this._renderTermsAndConditions();
         }
     }
 }
