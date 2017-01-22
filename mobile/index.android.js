@@ -177,7 +177,39 @@ export default class PsychApp extends Component {
         }
     }
 
-    render() {
+    _onTermsAndConditionsAnswered = async (termsAndConditionsAnswer) => {
+        this.setState({termsAndConditionsAnswer})
+        // We only save the answer permanently if it was yes, so we can give
+        // another chance to answer once the app is restarted
+        if (termsAndConditionsAnswer === 'no') {
+            return;
+        }
+        try {
+            await AsyncStorage.setItem(this.STORAGE.KEY_TERMS_AND_CONDITIONS, termsAndConditionsAnswer);
+        } catch (error) {
+            console.error(error)
+            ToastAndroid.show(SELECTED_STRINGS.errorFailedToSaveData, ToastAndroid.LONG);
+        }
+    }
+
+    _renderTermsAndConditions = () => {
+        const showDeclineMessage = this.state.termsAndConditionsAnswer === 'no';
+        return (
+            <View style={STYLES.appContainer}>
+                <Survey
+                    questionText={SELECTED_STRINGS.termsAndConditionsText}
+                    option1Text={SELECTED_STRINGS.termsAndConditionsAccept}
+                    option2Text={SELECTED_STRINGS.termsAndConditionsDecline}
+                    thankYouText={SELECTED_STRINGS.termsAndConditionsDeclineText}
+                    onOption1Clicked={() => this._onTermsAndConditionsAnswered('yes')}
+                    onOption2Clicked={() => this._onTermsAndConditionsAnswered('no')}
+                    isAnswered={showDeclineMessage}
+                />
+            </View>
+        );
+    }
+
+    _renderSurvey = () => {
         const todayDay = moment().format('YYYY-MM-DD')
         const lastAnswerDay = moment(this.state.meditationLastAnswerDate).format('YYYY-MM-DD')
         const isAnsweredToday = todayDay === lastAnswerDay
@@ -204,6 +236,15 @@ export default class PsychApp extends Component {
                 />
             </View>
         );
+    }
+
+    render() {
+        const isTermsAndConditionsAccepted = this.state.termsAndConditionsAnswer === 'yes';
+        if (isTermsAndConditionsAccepted) {
+            this._renderSurvey();
+        } else {
+            this._renderTermsAndConditions();
+        }
     }
 }
 

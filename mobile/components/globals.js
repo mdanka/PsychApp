@@ -64,6 +64,7 @@ const ALL_STRINGS = {
         messageAnswerSubmitted: 'Answer submitted',
         errorFailedToSaveAnswer: 'Failed to save answer - are you connected to the internet?',
         errorFailedToSaveNickname: 'Failed to save nickname',
+        errorFailedToSaveData: 'Failed to save data',
     },
     czech: {
         appName: 'Psychomejdlo',
@@ -85,6 +86,7 @@ const ALL_STRINGS = {
         messageAnswerSubmitted: 'Odpověď zaznamenána',
         errorFailedToSaveAnswer: 'Selhalo zaznamenání odpovědi, jste připojen/a k internetu?',
         errorFailedToSaveNickname: 'Ukládání přezdívky selhalo',
+        errorFailedToSaveData: 'Failed to save data',
     }
 }
 
