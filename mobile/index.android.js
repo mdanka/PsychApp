@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {AsyncStorage, AppRegistry, Button, StyleSheet, Text, View, Image, TextInput, Navigator, WebView, ToastAndroid} from "react-native";
+import {ActivityIndicator, AsyncStorage, AppRegistry, Button, StyleSheet, Text, View, Image, TextInput, Navigator, WebView, ToastAndroid} from "react-native";
 import {STYLES, SELECTED_STRINGS} from "./components/globals"
 import Survey from "./components/Survey";
 var PushNotification = require('react-native-push-notification');
@@ -87,6 +87,7 @@ export default class PsychApp extends Component {
             meditationLastAnswerDate: null,
             nickname: '',
             termsAndConditionsAnswer: null,
+            isLoading: true,
         };
 
         this.STORAGE = {}
@@ -119,6 +120,7 @@ export default class PsychApp extends Component {
                 meditationLastAnswerDate: meditationLastAnswerDateValue,
                 nickname: nicknameValue,
                 termsAndConditionsAnswer: termsAndConditionsAnswerValue,
+                isLoading: false,
             })
         } catch (error) {
             ToastAndroid.show(SELECTED_STRINGS.errorFailedToLoadSettings, ToastAndroid.SHORT);
@@ -209,6 +211,16 @@ export default class PsychApp extends Component {
         );
     }
 
+    _renderLoadingScreen = () => {
+        return (
+            <ActivityIndicator
+                animating={true}
+                style={{alignItems: 'center', justifyContent: 'center', padding: 8, height: 500}}
+                size="large"
+            />
+        );
+    }
+
     _renderSurvey = () => {
         const todayDay = moment().format('YYYY-MM-DD')
         const lastAnswerDay = moment(this.state.meditationLastAnswerDate).format('YYYY-MM-DD')
@@ -239,12 +251,15 @@ export default class PsychApp extends Component {
     }
 
     render() {
+        const isLoading = this.state.isLoading;
         const isTermsAndConditionsAccepted = this.state.termsAndConditionsAnswer === 'yes';
+        if (isLoading) {
+            return this._renderLoadingScreen();
+        }
         if (isTermsAndConditionsAccepted) {
             return this._renderSurvey();
-        } else {
-            return this._renderTermsAndConditions();
         }
+        return this._renderTermsAndConditions();
     }
 }
 
