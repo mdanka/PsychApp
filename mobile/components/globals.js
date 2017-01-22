@@ -70,11 +70,11 @@ const ALL_STRINGS = {
         pleaseEnterANickname: 'Napište prosím svou přezdívku zde',
         dontChangeYourNickname: 'Důležité: prosíme, neměňte svou přezdívku, usnadní nám analýzu',
 
-        errorFailedToLoadSettings: 'Failed to load settings - please restart app',
-        errorPleaseEnterNicknameFirst: 'Please enter a nickname first',
-        messageAnswerSubmitted: 'Answer submitted',
-        errorFailedToSaveAnswer: 'Failed to save answer - are you connected to the internet?'
-        errorFailedToSaveNickname: 'Failed to save nickname',
+        errorFailedToLoadSettings: 'Načítání nastavení selhalo, prosím, restartujte aplikaci',
+        errorPleaseEnterNicknameFirst: 'Vložte prosím nejdříve svou přezdívku',
+        messageAnswerSubmitted: 'Odpověď zaznamenána',
+        errorFailedToSaveAnswer: 'Selhalo zaznamenání odpovědi, jste připojen/a k internetu?'
+        errorFailedToSaveNickname: 'Ukládání přezdívky selhalo',
     }
 }
 
