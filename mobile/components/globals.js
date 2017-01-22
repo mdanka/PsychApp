@@ -47,6 +47,7 @@ const ALL_STRINGS = {
     english: {
         appName: 'PsychoSoap',
         haveYouMeditatedToday: 'Have you meditated today?',
+        haveYouMeditatedTodayClickToReply: 'Have you meditated today? Click here to quickly respond yes or no.',
         yes: 'Yes',
         no: 'No',
         thanksForYourResponse: 'Thanks for your response!',
@@ -69,6 +70,7 @@ const ALL_STRINGS = {
     czech: {
         appName: 'Psychomejdlo',
         haveYouMeditatedToday: 'Už jsi dnes meditoval/a?',
+        haveYouMeditatedTodayClickToReply: 'Už jsi dnes meditoval/a?',
         yes: 'Ano',
         no: 'Ne',
         thanksForYourResponse: 'Díky za Tvou odpověď!',

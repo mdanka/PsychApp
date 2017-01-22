@@ -90,7 +90,7 @@ PushNotification.localNotificationSchedule({
     // autoCancel: true, // (optional) default: true
     // largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
     // smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
-    bigText: "Have you meditated today? Click here to quickly respond yes or no.", // (optional) default: "message" prop
+    bigText: SELECTED_STRINGS.haveYouMeditatedTodayClickToReply, // (optional) default: "message" prop
     // subText: "This is a subText", // (optional) default: none
     // color: "red", // (optional) default: system default
     // vibrate: true, // (optional) default: true
@@ -106,7 +106,7 @@ PushNotification.localNotificationSchedule({
 
     /* iOS and Android properties */
     // title: "Have you meditated today?", // (optional, for iOS this is only used in apple watch, the title will be the app name on other iOS devices)
-    message: "Have you meditated today?", // (required)
+    message: SELECTED_STRINGS.haveYouMeditatedToday, // (required)
     // playSound: false, // (optional) default: true
     // soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
     // number: '10', // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
