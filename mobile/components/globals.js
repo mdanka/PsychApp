@@ -70,7 +70,7 @@ const ALL_STRINGS = {
     czech: {
         appName: 'Psychomejdlo',
         haveYouMeditatedToday: 'Už jsi dnes meditoval/a?',
-        haveYouMeditatedTodayClickToReply: 'Už jsi dnes meditoval/a?',
+        haveYouMeditatedTodayClickToReply: 'Už jsi dnes meditoval/a? Klikněte zde pro odpověď.',
         yes: 'Ano',
         no: 'Ne',
         thanksForYourResponse: 'Díky za Tvou odpověď!',
